@@ -1,0 +1,72 @@
+html{
+    background: #20313b;
+}
+
+body{
+    font-family: 'Roboto', sans-serif;
+    color: hsl(240, 5%, 83%);
+}
+
+.content{
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    font-weight: lighter;
+}
+
+footer{
+    font-size: smaller;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    font-weight: lighter;
+}
+
+header{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    font-weight: lighter;
+}
+
+#branding{
+    font-family: 'Berkshire Swash', cursive;
+}
+
+.statement{
+    color: white;
+    font-size: 350%
+}
+
+.callToAction {
+    background-color: #e22866;
+    color: white;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    line-height: 45px;
+    height: 45px;
+    border: 6px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.userAgent{
+    color: #e22866
+}
+
+.page-enter-active, .page-leave-active{
+    transition: opacity .5s
+}
+
+.page-enter, .page-leave-active{
+    opacity: 0
+}
