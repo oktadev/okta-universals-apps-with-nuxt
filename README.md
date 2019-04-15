@@ -320,12 +320,33 @@ we have a good page description and keywords embedded in the meta. Any values
 set here will override any global head values you set in the nuxt.config.js.
 This is all handled by [vue-meta](https://github.com/nuxt/vue-meta).
 
-Then the progress.vue
+Next let's create a page with some dynamic content by talking to an API. For
+this example we'll mock an API with a static JSON file. Create ```status.json```
+in the static folder and give it the following content:
+
 ```
+{
+    "statusDate": "2018-04-14",
+    "statusUpdate": "We are sorry to report that bad weather has impacted the growth of our widgets. We are working as fast as we can to get widgets dispatched to you."      
+}
+```
+
+To make our API calls we'll be using the promise driven Axios library, from the
+terminal install this package with the following command:
+
+```
+npm install axios
+```
+
+We are ready to create our page  create ```progress.vue``` in the pages 
+directory and populate it with the following content.
+
+```
+<template>
 <template>
   <div>
     <h1 class="statement">Progress Report</h1>
-    <p>{{statusDate.toLocaleDateString("en-US")}}</p>
+    <p>{{statusDate}}</p>
     <p class="bodytext">
       {{statusUpdate}}
     </p>
@@ -334,22 +355,34 @@ Then the progress.vue
 </template>
 
 <script>
+const axios = require('axios'); 
 export default {
-  data() {
-    return {
-      statusUpdate: 'We are sorry to report that bad weather has impacted the growth of our widgets. We are working as fast as we can to get widgets dispatched to you.',
-      statusDate: new Date()
-    }
+  authenticated: true,
+  asyncData ({ params }) {
+    return axios.get('http://localhost:3000/status.json')
+    .then((res) => {
+      return {
+        statusUpdate: res.data.statusUpdate,
+        statusDate: res.data.statusDate
+      }
+    })
   }
 }
 </script>
 
 <style>
 </style>
+
 ```
-In this page we are using the script tag to dynamically inject values for the
-data and status message. These can be referenced in the template using the
-```{{variable}}``` syntax
+
+In this page we are using the asyncdata component to make the axios call on the
+server side the result of which is then parsed and made available to the
+template with using the ```{{ variable }}``` syntax. The difference between
+asyncdata and the data syntax is where the call is executed. With data the call 
+is always made from the client side after the page reaches the client a further
+call is made to replace values that came with the page. With asyncData the
+request is made by the server and the result is then merged with the values
+already in data.
 
 Better, but what about the elements which will be common between pages? This is
 where layouts comes in. Each of the pages we've just created sit within a layout
