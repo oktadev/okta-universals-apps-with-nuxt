@@ -2,8 +2,6 @@ import pkg from './package'
 require('dotenv').config()
 
 export default {
-  mode: 'universal',
-
   /*
   ** Headers of the page
   */
@@ -42,16 +40,42 @@ export default {
   ** Nuxt.js modules
   */
   modules: [
-    ['nuxt-oauth']
+    '@nuxtjs/axios',
+    '@nuxtjs/auth-next'
   ],
 
-  oauth: {
-    sessionName: 'WidgetCoSession',
-    secretKey: process.env.SECRET_KEY,
-    oauthHost: process.env.OAUTH_ISSUER,
-    oauthClientID: process.env.CLIENT_ID,
-    oauthClientSecret: process.env.CLIENT_SECRET,
-    scopes: ['openid']
+  auth:{
+    strategies:{
+      okta:{
+        scheme: 'oauth2',
+        endpoints: {
+          authorization: process.env.OAUTH_ISSUER+"/v1/authorize",
+          token: process.env.OAUTH_ISSUER+"/v1/token",
+          userInfo: process.env.OAUTH_ISSUER+"/v1/userinfo",
+          logout: process.env.OAUTH_ISSUER+"/v1/logout"
+        },
+        token: {
+          property: 'access_token',
+          type: 'Bearer',
+          maxAge: 1800
+        },
+        /*refreshToken: {
+          property: 'refresh_token',
+          maxAge: 60 * 60 * 24 * 30
+        },*/
+        responseType: 'code',
+        grantType: 'authorization_code',
+        //accessType: 'offline', //needed for refresh tokens
+        clientId: process.env.CLIENT_ID,
+        scope: ['openid', 'profile', 'email'],
+        codeChallengeMethod: 'S256',//Triggers use of PKCE
+        }
+    },
+    redirect: {
+      login: '/login',
+      callback: '/auth',
+      home: '/'
+    },
   },
 
   /*
