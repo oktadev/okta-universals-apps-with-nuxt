@@ -57,25 +57,16 @@ export default {
         token: {
           property: 'access_token',
           type: 'Bearer',
-          maxAge: 1800
+          maxAge: 1800,
         },
-        /*refreshToken: {
-          property: 'refresh_token',
-          maxAge: 60 * 60 * 24 * 30
-        },*/
         responseType: 'code',
         grantType: 'authorization_code',
-        //accessType: 'offline', //needed for refresh tokens
         clientId: process.env.CLIENT_ID,
         scope: ['openid', 'profile', 'email'],
         codeChallengeMethod: 'S256',//Triggers use of PKCE
+        autoLogout: true,
         }
-    },
-    redirect: {
-      login: '/login',
-      callback: '/auth',
-      home: '/'
-    },
+    }
   },
 
   /*
