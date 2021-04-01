@@ -12,7 +12,7 @@
 <script>
 const axios = require('axios'); 
 export default {
-  authenticated: true,
+  middleware: 'auth',
   asyncData ({ params }) {
     return axios.get('http://localhost:3000/status.json')
     .then((res) => {
